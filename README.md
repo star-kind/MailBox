@@ -5,13 +5,13 @@
 <br>
 工程名：邮件发送系统(基于Maven+Servlet+Java Bean)，目前支持QQ/21cn/163/阿里云/新浪五种邮箱发送邮件．<br>
 
-0.开发环境：Ubuntu
-1.开发工具：Eclipse+Sublime Text+VS Code
-2.管理工具:Maven
-3.数据库:Sqlite v3.0
-4.服务端服务器 Tomcat v9.0
-5.客户端:Google Chrome/Firefox
-6.邮件发送协议：SMTP
+* 0.开发环境：Ubuntu
+* 1.开发工具：Eclipse+Sublime Text+VS Code
+* 2.管理工具:Maven
+* 3.数据库:Sqlite v3.0
+* 4.服务端服务器 Tomcat v9.0
+* 5.客户端:Google Chrome/Firefox
+* 6.邮件发送协议：SMTP
 
 项目框架:无<br>
 
