@@ -10,7 +10,8 @@ sqlite数据库3.0使用总结:
 
 + Cannot add a NOT NULL column with default value NULL;(not null 与 default 得一齐起)<br>
 
-+ 使用jdbc代码查询时加别名会报错:SQLException: no such column: 'xxx',建议本项目库表字段名字直接连写,不要用 "_" 分隔;<br>
++ 使用jdbc代码查询时加别名会报错:SQLException: no such column: 'xxx',建议本项目库表字段名字直接连写,不要用 "_" 分隔;
+<br>
 
 _______________________________________________________________________________________
 
@@ -57,6 +58,8 @@ java.lang.ClassNotFoundException: org.sqlite.JDBC
 
 纯java项目使用的本地自己的JRE,那么classLoader在加载jar和class时候是分开的,对于我们自己编写的class,会在APP_HOME/bin下.<br> 导入的jar包或者user library的配置信息会出现在APP_HOME/.classpath文件中,<br>ClassLoader会很智能去加载这些classes和jar; .classpath文件内容如下：
 <br>
+
+``````
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
     <classpathentry kind="src" path="src"/>
@@ -71,6 +74,8 @@ java.lang.ClassNotFoundException: org.sqlite.JDBC
     <classpathentry kind="lib" path="E:/Jar_Framework/spring revelant/asm-3.2.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>
+``````
+
 <br>
 这样ClassLoader就会正确的找到所有需要的类. 而对于java web项目,<br>就不一样了,虽然eclipse的workspace中仍然有.classpath文件,<br>但即使你导入的了自己定义的user library,<br>它也不会出现在.classpath中,这就是问题的关键. 
 
@@ -109,11 +114,23 @@ private static String dirURI;
 ----------------------------------------------------------
 
 tomcat启动报错:<br>
-Caused by: java.lang.IllegalStateException: Unable to complete the scan for annotations for web application [/MailBox] due to a StackOverflowError. Possible root causes include a too low setting for -Xss and illegal cyclic inheritance dependencies. The class hierarchy being processed was [org.sqlite.SQLiteConnection->org.sqlite.jdbc4.JDBC4Connection->org.sqlite.jdbc3.JDBC3Connection->org.sqlite.SQLiteConnection]
-
-翻译:非法状态异常：由于堆栈溢出错误，无法完成对Web应用程序[/mailbox]<br>批注的扫描。可能的根本原因包括-xss设置太低以及非法的循环继承依赖项。<br>正在处理的类层次结构是[org.sqlite.sqliteConnection->org.sqlite.jdbc4.jdbc4连接->org.sqlite.jdbc3.jdbc3连接->org.sqlite.sqliteConnection]
+Caused by: 
+java.lang.IllegalStateException:<br>
+ Unable to complete the scan for annotations for web application [/MailBox] due to a StackOverflowError.<br> 
+ Possible root causes include a too low setting for -Xss and illegal cyclic inheritance dependencies. <br>
+<br> 
+The class hierarchy being processed was [org.sqlite.SQLiteConnection->org.sqlite.jdbc4.JDBC4Connection->
 <br>
-这个问题的根本原因是jar包冲突，继承关系刚好相反，故造成tomcat启动的循环依赖问题，导致堆栈溢出。所以应该考虑的是如何解决jar依赖问题.
+org.sqlite.jdbc3.JDBC3Connection->org.sqlite.SQLiteConnection]
+
+翻译:非法状态异常：由于堆栈溢出错误，无法完成对Web应用程序[/mailbox]<br>
+批注的扫描。可能的根本原因包括-xss设置太低以及非法的循环继承依赖项。
+<br>正在处理的类层次结构是
+<br>
+[org.sqlite.sqliteConnection->org.sqlite.jdbc4.jdbc4连接->org.sqlite.jdbc3.jdbc3连接->org.sqlite.sqliteConnection]
+<br>
+这个问题的根本原因是jar包冲突，继承关系刚好相反，故造成tomcat启动的循环依赖问题，<br>
+导致堆栈溢出。所以应该考虑的是如何解决jar依赖问题.<br>
 <br>
 解决:<br>
 修改sqlite-jdbc依赖为如下(即与数据库版本一致):<br>
@@ -125,7 +142,9 @@ Caused by: java.lang.IllegalStateException: Unable to complete the scan for anno
 		</dependency>
 ----------------------------------------------------------
 <br>
-Caused by: org.sqlite.SQLiteException: [SQLITE_CONSTRAINT] Abort due to constraint violation (UNIQUE constraint failed: account.acname)<br>
+Caused by: org.sqlite.SQLiteException:
+<br>
+[SQLITE_CONSTRAINT] Abort due to constraint violation (UNIQUE constraint failed: account.acname)<br>
 原因：粗心大意,insert(statement)重复执行了两次<br>
 ----------------------------------------------------------
 ajax获取到的中文内容呈乱码<br>
@@ -176,7 +195,11 @@ required属性仅在submit事件被触发时才起效.<br>
 	</servlet>
 ----------------------------------------------------------
 
-若在HTML内联标签中已书写"onclick='xxx()'/onsubmit='xxx()'/onchange='xxx()'"等写法时,不宜将对应之JavaScript函数封装在外部文件,当存在于当前页中.<br>
+若在HTML内联标签中已书写<br>
+"onclick='xxx()'/onsubmit='xxx()'/onchange='xxx()'"等写法时,
+<br>
+不宜将对应之JavaScript函数封装在外部文件,当存在于当前页中.
+<br>
 ----------------------------------------------------------
 
 - 新增技术项:
@@ -238,17 +261,23 @@ required属性仅在submit事件被触发时才起效.<br>
 ``````
 ----------------------------------------------------------
 
-电子邮件的在网络中传输和网页一样需要遵从特定的协议，常用的电子邮件协议包括SMTP，POP3，IMAP。其中邮件的创建和发送只需要用到SMTP协议。<br>SMTP 是Simple Mail Transfer Protocol 的简称，即简单邮件传输协议。<br>
+电子邮件的在网络中传输和网页一样需要遵从特定的协议，常用的电子邮件协议包括:<br>
+<br>SMTP，POP3，IMAP。其中邮件的创建和发送只需要用到SMTP协议。
+<br>SMTP 是Simple Mail Transfer Protocol 的简称，即简单邮件传输协议。<br>
 
 所需jar包:java-mail-1.4.5.jar<br>
 
-* SMTP( Simple Mail Transfer Protocol ):电子邮件发送协议。<br>当我们使用客户端程序发送邮件时，客户端程序先把邮件发送给我们设置SMTP服务器，然后SMTP服务器再根据收件人的地址，把邮件中转给接受方的SMTP服务器，以便让邮件收件人最终使用POP3或者IMAP方式收取邮件。<br>JavaMail API不包含SMIP的服务程序，<br>所以使用JavaMail技术发送邮件，需要其他SMTP服务器的支持。
+* SMTP( Simple Mail Transfer Protocol ):电子邮件发送协议。<br>当我们使用客户端程序发送邮件时，<br>
+  客户端程序先把邮件发送给我们设置SMTP服务器，然后SMTP服务器再根据收件人的地址，把邮件中转给接受方的SMTP服务器，<br>以便让邮件收件人最终使用POP3或者IMAP方式收取邮件。<br>JavaMail API不包含SMIP的服务程序，<br>所以使用JavaMail技术发送邮件，需要其他SMTP服务器的支持。<br>
 
-* POP3协议（Post Office Protocol V3）:是一种收取邮件的协议，通过这个协议，可以让邮件客户端程序把存在POP3服务器上的邮件接收到本机上进行处理。<br>
+* POP3协议（Post Office Protocol V3）:是一种收取邮件的协议，<br>
+  通过这个协议，可以让邮件客户端程序把存在POP3服务器上的邮件接收到本机上进行处理。<br>
 
-* IMAP协议（Internet Message Access Protocol）：IMAP是更加高级的用于接收邮件的协议。<br>
+* IMAP协议（Internet Message Access Protocol）：<br>
+  IMAP是更加高级的用于接收邮件的协议。<br>
 
-* MIME协议（Multipurpose Internet Mail Extensions）:它不是邮件传输协议，但对传输内容的文本、附件及其他内容定义了格式。<br>
+* MIME协议（Multipurpose Internet Mail Extensions）:<br>
+  它不是邮件传输协议，但对传输内容的文本、附件及其他内容定义了格式。<br>
 ----------------------------------------------------------
 
 创一个专门的超类以整合收发双表属性字段,single pojo bean继承之.<br>
