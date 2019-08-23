@@ -54,9 +54,12 @@ Servlet项目jsp发送请求报404,已写@WebServlet,但未扫描到Handler路�
 java.lang.ClassNotFoundException: org.sqlite.JDBC
 <br>
 原因:<br>
-和classLoader有关,对于纯java项目,它不存在WEB-INF目录,所以在引入jar包的时候一般都是通过buildpath直接引入,例如我要引入Spring3X,那么先定义一个user library,然后通过build path引入. <br>
+和classLoader有关,对于纯java项目,它不存在WEB-INF目录,所以在引入jar包的时候一般都是通过buildpath直接引入,例如我要引入Spring3X,
+那么先定义一个user library,然后通过build path引入. <br>
 
-纯java项目使用的本地自己的JRE,那么classLoader在加载jar和class时候是分开的,对于我们自己编写的class,会在APP_HOME/bin下.<br> 导入的jar包或者user library的配置信息会出现在APP_HOME/.classpath文件中,<br>ClassLoader会很智能去加载这些classes和jar; .classpath文件内容如下：
+纯java项目使用的本地自己的JRE,那么classLoader在加载jar和class时候是分开的,对于我们自己编写的class,会在APP_HOME/bin下.
+<br> 
+导入的jar包或者user library的配置信息会出现在APP_HOME/.classpath文件中,<br>ClassLoader会很智能去加载这些classes和jar; .classpath文件内容如下：
 <br>
 
 ``````
@@ -77,11 +80,14 @@ java.lang.ClassNotFoundException: org.sqlite.JDBC
 ``````
 
 <br>
-这样ClassLoader就会正确的找到所有需要的类. 而对于java web项目,<br>就不一样了,虽然eclipse的workspace中仍然有.classpath文件,<br>但即使你导入的了自己定义的user library,<br>它也不会出现在.classpath中,这就是问题的关键. 
+这样ClassLoader就会正确的找到所有需要的类. 而对于java web项目,<br>就不一样了,虽然eclipse的workspace中仍然有.classpath文件,
+<br>但即使你导入的了自己定义的user library,<br>它也不会出现在.classpath中,这就是问题的关键. 
 
 对于java web项目,它最终不是通过本地的JRE去运行,<br>而是部署到web服务器,如Tomcat、Weblogic、WebSphere等,这些服务器都实现了自身的类加载器. 
 
-以Tomcat典型结果为例,它的四组目录结构common、server、shared、webapps分别对应四个不同的自定义类加载器CommonClassLoader、CatalinaClassLoader、SharedClassLoader和WebappClassLoader,<br>WebappClassLoader加载器专门负责加载webapps下面各个web项目的WEB-INF下的类库. <br>而我们通过user library引入的jar包自然不会被WebappClassLoader加载器加载,所以必然会报ClassNotFoundException. 
+以Tomcat典型结果为例,它的四组目录结构common、server、shared、webapps分别对应四个不同的自定义类加载器CommonClassLoader、CatalinaClassLoader、SharedClassLoader和WebappClassLoader,
+<br>WebappClassLoader加载器专门负责加载webapps下面各个web项目的WEB-INF下的类库. 
+<br>而我们通过user library引入的jar包自然不会被WebappClassLoader加载器加载,所以必然会报ClassNotFoundException. 
 
 解决:<br>
 第一步-添加驱动依赖:<br>
@@ -92,7 +98,9 @@ java.lang.ClassNotFoundException: org.sqlite.JDBC
 			<version>3.23.1</version>
 		</dependency>
 		
-第二步-将jar包移至WEBINF目录下的lib文件夹内(没有lib文件夹就自创一个),<br>然后右键工程-->properties-->Java build path-->classpath-->add JARs-->选中lib文件夹里的jar包<br>
+第二步-将jar包移至WEBINF目录下的lib文件夹内(没有lib文件夹就自创一个),<br>然后右键工程-->properties-->Java build path-->classpath-->add JARs-->
+选中lib文件夹里的jar包
+<br>
 
 第三步-再执行一次创表语句<br>
 ----------------------------------------------------------
