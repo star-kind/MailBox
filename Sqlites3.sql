@@ -6,7 +6,8 @@ DROP TABLE account;
 ALTER TABLE account ADD email text; 
 
 
-INSERT INTO account (acname,email,gender,password,salt,birth,reg_time) VALUES ('administrator','javaguide@qq.com',0,'123123','QWERTYUI','2013-03-07','2013-04-17');
+INSERT INTO account (acname,email,gender,password,salt,birth,reg_time) VALUES 
+('administrator','javaguide@qq.com',0,'123123','QWERTYUI','2013-03-07','2013-04-17');
 
 
 SELECT acid,acname,email,gender,password,salt,birth,reg_time AS regTime FROM account WHERE acname=?;
@@ -34,7 +35,8 @@ VALUES (?,?,?,?,?,?,?,?,?,?);
 # ...
 SELECT id,transmitter,receiver,title,content,composeTime,launchTime,lastEditTime,moveInRecycleTime,status,attachmentFileName FROM transmitLetter;
 
-SELECT id,transmitter,receiver,title,content,composeTime,launchTime,lastEditTime,moveInRecycleTime,status,attachmentFileName FROM transmitLetter WHERE id=?;
+SELECT id,transmitter,receiver,title,content,composeTime,launchTime,lastEditTime,moveInRecycleTime,status,attachmentFileName 
+FROM transmitLetter WHERE id=?;
 
 
 # 发件表
@@ -72,7 +74,8 @@ CREATE TABLE IF NOT EXISTS receiveLetter(
 
 
 # ......
-SELECT id,transmitter,receiver,title,content,composeTime,launchTime,lastEditTime,moveInRecycleTime,status,attachmentFileName FROM transmitLetter WHERE transmitter=?;
+SELECT id,transmitter,receiver,title,content,composeTime,launchTime,lastEditTime,moveInRecycleTime,status,attachmentFileName 
+FROM transmitLetter WHERE transmitter=?;
 
 # update
 UPDATE transmitLetter SET status=? WHERE id IN (?,?);
