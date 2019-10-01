@@ -1,7 +1,7 @@
 # MailBox
 邮件发送平台系统
 
-#工程竣工总结
+## 工程简介
 <br>
 工程名：邮件发送系统(基于Maven+Servlet+Java Bean)，目前支持QQ/21cn/163/阿里云/新浪五种邮箱发送邮件．<br>
 
@@ -17,7 +17,7 @@
 
 涉及的设计模式：单例模式<br>
 
-所用语言
+### 程序语言:
 - 后端:Sqlite+java<br>
 - 前端:HTML+CSS,JavaScript+JQuery,JSTL+JSP EL<br>
 
