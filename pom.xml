@@ -92,7 +92,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>4.3.22.RELEASE</version>
+			<version>5.2.20.RELEASE</version>
 		</dependency>
 
 		<!-- 自以下四项以来皆为邮件附件发送所需 begin -->
